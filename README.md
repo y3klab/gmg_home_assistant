@@ -1,5 +1,33 @@
 # Green Mountain Grill for Home Assistant
 
+> ## 🍖 Community-maintained fork — updated for modern Home Assistant
+>
+> **All the credit for this integration belongs to [@jwhitby91](https://github.com/jwhitby91)** — his
+> work is what put our Green Mountain grills into Home Assistant in the first place. 🙏
+>
+> The original stopped loading on **Home Assistant 2025.1 and newer**: HA removed some long-deprecated
+> climate constants (`HVAC_MODE_*`, `SUPPORT_TARGET_TEMPERATURE`, `TEMP_FAHRENHEIT`) that `climate.py`
+> imports, so the module raises `ImportError` before it can even set up — the kind of upstream API
+> churn that eventually catches every integration. This fork **only modernizes `climate.py`** to the
+> current climate API so it loads and works again. Verified live on **HA 2026.7.2**; same discovery,
+> same features.
+>
+> **What changed** (only `climate.py`): `HVAC_MODE_*` → `HVACMode.*` · `SUPPORT_TARGET_TEMPERATURE` →
+> `ClimateEntityFeature.TARGET_TEMPERATURE` (+ `TURN_ON`/`TURN_OFF` + the new turn-on/off model) ·
+> `TEMP_FAHRENHEIT` → `UnitOfTemperature.FAHRENHEIT`.
+>
+> The fix is also being offered back to the original repo as a PR — if @jwhitby91 ever picks it up
+> again, all the better. This fork just keeps his work alive for fellow GMG owners in the meantime.
+>
+> **Install (HACS):** ⋮ → *Custom repositories* → add `https://github.com/y3klab/gmg_home_assistant`
+> as an **Integration** → download it → add `climate:` / `- platform: gmg` to `configuration.yaml`
+> → restart HA. ⚠️ The grill must be on the **same network/subnet as Home Assistant** — it's
+> auto-discovered via a UDP broadcast on port 8080 (which doesn't cross VLANs).
+
+---
+
+# Green Mountain Grill for Home Assistant
+
 ## **WARNING** This compoment is still in development. Use with caution!  
 
 ## Installation
