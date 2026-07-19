@@ -1,6 +1,6 @@
 # Green Mountain Grill for Home Assistant
 
-> ## 🍖 Community-maintained fork — updated for modern Home Assistant
+> ## 🔥 Community-maintained fork — updated for modern Home Assistant 🔥
 >
 > **All the credit for this integration belongs to [@jwhitby91](https://github.com/jwhitby91)** — his
 > work is what put our Green Mountain grills into Home Assistant in the first place. 🙏
