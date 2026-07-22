@@ -10,30 +10,41 @@ from homeassistant.const import (
     ATTR_TEMPERATURE,
     UnitOfTemperature)
 
+from homeassistant.config_entries import SOURCE_IMPORT
+from homeassistant.core import HomeAssistant
+from .const import DOMAIN
+
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+    """Migrate the legacy `climate: - platform: gmg` YAML into a config entry."""
+    hass.async_create_task(
+        hass.config_entries.flow.async_init(
+            DOMAIN, context={"source": SOURCE_IMPORT}, data={}
+        )
+    )
+    return
+
+
+def _build_entities(all_grills):
+    """Build entity objects (runs in an executor; entity init polls the grill)."""
     entities = []
-    _LOGGER.debug("Looking for grills")
-
-    # look for grills.. timeout = 2
-    all_grills = grills(2)
-
-    for my_grill in all_grills: 
+    for my_grill in all_grills:
         _LOGGER.debug(f"Found grill IP: {my_grill._ip} Serial: {my_grill._serial_number}")
-
         entities.append(GmgGrill(my_grill))
+        for probe in (1, 2):
+            entities.append(GmgGrillProbe(my_grill, probe))
+    return entities
 
-        count = 1
-        probe_count = 2
 
-        while count <= probe_count:
-            entities.append(GmgGrillProbe(my_grill, count))
-            count += 1
-
+async def async_setup_entry(hass, entry, async_add_entities):
+    """Set up Green Mountain Grill climate entities from a config entry."""
+    _LOGGER.debug("Looking for grills")
+    all_grills = await hass.async_add_executor_job(grills, 2)
+    entities = await hass.async_add_executor_job(_build_entities, all_grills)
     async_add_entities(entities)
 
-    return
+
 
 class GmgGrill(ClimateEntity):
     """Representation of a Green Mountain Grill smoker"""

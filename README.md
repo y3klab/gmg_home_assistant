@@ -20,8 +20,8 @@
 > again, all the better. This fork just keeps his work alive for fellow GMG owners in the meantime.
 >
 > **Install (HACS):** ⋮ → *Custom repositories* → add `https://github.com/y3klab/gmg_home_assistant`
-> as an **Integration** → download it → add `climate:` / `- platform: gmg` to `configuration.yaml`
-> → restart HA. ⚠️ The grill must be on the **same network/subnet as Home Assistant** — it's
+> as an **Integration** → download it → **restart HA** → then **Settings → Devices & Services → Add Integration → "Green Mountain Grill"**.
+> *(Existing `climate: - platform: gmg` YAML setups are auto-migrated to the UI on restart — nothing to change.)* ⚠️ The grill must be on the **same network/subnet as Home Assistant** — it's
 > auto-discovered via a UDP broadcast on port 8080 (which doesn't cross VLANs).
 
 ---
